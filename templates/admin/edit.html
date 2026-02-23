@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% block title %}{% if post %}编辑文章{% else %}新建文章{% endif %}{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+  <h1>{% if post %}编辑：{{ post.slug }}{% else %}新建文章{% endif %}</h1>
+  {% if post %}
+    <a href="{{ url_for('post_detail', slug=post.slug) }}" target="_blank" class="btn btn-secondary">🌐 预览</a>
+  {% endif %}
+</div>
+
+{% if post %}
+  <!-- 编辑已有文章：直接编辑原始 MD 内容 -->
+  <form method="post">
+    <div class="editor-wrap">
+      <textarea name="content" id="editor" class="md-editor">{{ post.raw }}</textarea>
+    </div>
+    <div class="editor-footer">
+      <button type="submit" class="btn btn-primary">💾 保存</button>
+      <a href="{{ url_for('admin_index') }}" class="btn btn-secondary">返回</a>
+    </div>
+  </form>
+
+{% else %}
+  <!-- 新建文章：填写 Front Matter + 正文 -->
+  <form method="post">
+    <div class="new-post-meta">
+      <div class="form-group">
+        <label>文章标题 *</label>
+        <input type="text" name="title" required placeholder="输入标题，文件名将自动生成" />
+      </div>
+      <div class="form-group">
+        <label>日期</label>
+        <input type="date" name="date" value="{{ today }}" />
+      </div>
+      <div class="form-group">
+        <label>标签（逗号分隔）</label>
+        <input type="text" name="tags" placeholder="技术, 随笔, Python" />
+      </div>
+      <div class="form-group">
+        <label>摘要（可选）</label>
+        <input type="text" name="summary" placeholder="留空则自动截取正文前120字" />
+      </div>
+    </div>
+    <div class="editor-wrap">
+      <label style="display:block; margin-bottom:0.5rem; color:#555; font-size:0.9rem;">正文内容（Markdown）</label>
+      <textarea name="content" id="editor" class="md-editor" placeholder="在这里写正文..."></textarea>
+    </div>
+    <div class="editor-footer">
+      <button type="submit" class="btn btn-primary">💾 创建文章</button>
+      <a href="{{ url_for('admin_index') }}" class="btn btn-secondary">返回</a>
+    </div>
+  </form>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "admin/base.html" %}
+{% block title %}文章管理{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+  <h1>文章管理</h1>
+  <div class="admin-actions">
+    <!-- 上传 MD 文件 -->
+    <form method="post" action="{{ url_for('admin_upload') }}" enctype="multipart/form-data" style="display:inline;">
+      <label class="btn btn-secondary upload-label">
+        📤 上传 MD 文件
+        <input type="file" name="file" accept=".md" onchange="this.form.submit()" style="display:none;" />
+      </label>
+    </form>
+    <a href="{{ url_for('admin_new') }}" class="btn btn-primary">✏️ 新建文章</a>
+  </div>
+</div>
+
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>标题</th>
+        <th>文件名</th>
+        <th>日期</th>
+        <th>标签</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+      <tr>
+        <td><a href="{{ url_for('post_detail', slug=post.slug) }}" target="_blank">{{ post.title }}</a></td>
+        <td class="filename">{{ post.filename }}</td>
+        <td>{{ post.date_str }}</td>
+        <td>
+          {% for tag in post.tags %}
+            <span class="tag">#{{ tag }}</span>
+          {% endfor %}
+        </td>
+        <td class="actions">
+          <a href="{{ url_for('admin_edit', slug=post.slug) }}" class="btn btn-sm btn-secondary">编辑</a>
+          <form method="post" action="{{ url_for('admin_delete', slug=post.slug) }}" style="display:inline;"
+                onsubmit="return confirm('确定删除《{{ post.title }}》？')">
+            <button type="submit" class="btn btn-sm btn-danger">删除</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" style="text-align:center; color:#aaa; padding:2rem;">暂无文章</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

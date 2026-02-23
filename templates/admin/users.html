@@ -1,0 +1,56 @@
+{% extends "admin/base.html" %}
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+  <h1>👥 用户管理</h1>
+</div>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem;">
+  <!-- 用户列表 -->
+  <div>
+    <h3 style="margin-bottom:1rem;">现有用户</h3>
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead><tr><th>用户名</th><th>操作</th></tr></thead>
+        <tbody>
+          {% for username in users %}
+          <tr>
+            <td>{{ username }}</td>
+            <td>
+              {% if username != session.username %}
+              <form method="post" style="display:inline;"
+                    onsubmit="return confirm('确定删除用户 {{ username }}？')">
+                <input type="hidden" name="action" value="delete" />
+                <input type="hidden" name="username" value="{{ username }}" />
+                <button type="submit" class="btn btn-sm btn-danger">删除</button>
+              </form>
+              {% else %}
+              <span style="color:#aaa; font-size:0.85rem;">当前用户</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 添加用户 -->
+  <div>
+    <h3 style="margin-bottom:1rem;">添加新用户</h3>
+    <form method="post" class="user-form">
+      <input type="hidden" name="action" value="add" />
+      <div class="form-group">
+        <label>用户名</label>
+        <input type="text" name="username" required />
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" name="password" required />
+      </div>
+      <button type="submit" class="btn btn-primary">添加用户</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

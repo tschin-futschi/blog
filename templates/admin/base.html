@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}后台管理{% endblock %} · 博客</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar">
+    <div class="admin-logo">⚙️ 博客后台</div>
+    <nav class="admin-nav">
+      <a href="{{ url_for('admin_index') }}" class="{% if request.endpoint == 'admin_index' %}active{% endif %}">📄 文章管理</a>
+      <a href="{{ url_for('admin_new') }}" class="{% if request.endpoint == 'admin_new' %}active{% endif %}">✏️ 新建文章</a>
+      <a href="{{ url_for('admin_terminal') }}" class="{% if request.endpoint == 'admin_terminal' %}active{% endif %}">💻 网页终端</a>
+      <a href="{{ url_for('admin_users') }}" class="{% if request.endpoint == 'admin_users' %}active{% endif %}">👥 用户管理</a>
+      <a href="{{ url_for('index') }}" target="_blank">🌐 查看网站</a>
+    </nav>
+    <div class="admin-user">
+      <span>👤 {{ session.username }}</span>
+      <a href="{{ url_for('logout') }}">退出</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for msg in messages %}
+          <div class="admin-flash">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

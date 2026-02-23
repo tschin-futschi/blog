@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}我的博客{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/blog" class="site-title">📝 我的博客</a>
+      <nav>
+        <a href="/blog">文章</a>
+        <div class="search-wrap">
+          <input type="text" id="search-input" placeholder="搜索文章…" autocomplete="off" />
+          <div id="search-results"></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© {{ 2024 }} 我的博客 · 用 Flask + Markdown 驱动</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+</body>
+</html>

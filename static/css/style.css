@@ -1,0 +1,115 @@
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+       background: #f8f9fa; color: #333; line-height: 1.7; }
+a { color: #4a90d9; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── Layout ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+.layout { display: grid; grid-template-columns: 1fr 240px; gap: 2rem; padding: 2rem 0; }
+.layout--post { grid-template-columns: 1fr 220px; }
+@media (max-width: 768px) {
+  .layout, .layout--post { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* ── Header ── */
+.site-header { background: #fff; border-bottom: 1px solid #e8e8e8;
+               padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+.site-header .container { display: flex; align-items: center; justify-content: space-between; }
+.site-title { font-size: 1.3rem; font-weight: 700; color: #333; }
+.site-header nav { display: flex; align-items: center; gap: 1.5rem; }
+.site-header nav a { color: #555; font-size: 0.95rem; }
+
+/* ── Search ── */
+.search-wrap { position: relative; }
+#search-input { border: 1px solid #ddd; border-radius: 20px; padding: 0.35rem 1rem;
+                font-size: 0.9rem; width: 200px; outline: none; transition: border 0.2s; }
+#search-input:focus { border-color: #4a90d9; }
+#search-results { position: absolute; right: 0; top: calc(100% + 8px);
+                  background: #fff; border: 1px solid #e8e8e8; border-radius: 8px;
+                  box-shadow: 0 4px 16px rgba(0,0,0,.1); width: 320px;
+                  max-height: 400px; overflow-y: auto; display: none; z-index: 200; }
+#search-results .result-item { padding: 0.75rem 1rem; border-bottom: 1px solid #f0f0f0; }
+#search-results .result-item:last-child { border-bottom: none; }
+#search-results .result-item a { color: #333; font-weight: 600; display: block; }
+#search-results .result-item a:hover { color: #4a90d9; text-decoration: none; }
+#search-results .result-meta { font-size: 0.8rem; color: #999; margin-top: 2px; }
+#search-results .no-result { padding: 1rem; color: #999; text-align: center; }
+
+/* ── Post Card ── */
+.post-card { background: #fff; border-radius: 10px; padding: 1.5rem;
+             margin-bottom: 1.25rem; border: 1px solid #eee;
+             transition: box-shadow 0.2s; }
+.post-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.post-meta { font-size: 0.85rem; color: #999; margin-bottom: 0.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.post-meta time { margin-right: 0.25rem; }
+.post-card h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+.post-card h2 a { color: #222; }
+.post-card h2 a:hover { color: #4a90d9; text-decoration: none; }
+.post-summary { color: #666; font-size: 0.95rem; margin-bottom: 0.75rem; }
+.read-more { font-size: 0.9rem; color: #4a90d9; }
+
+/* ── Tags ── */
+.tag { background: #eef4fb; color: #4a90d9; border-radius: 4px;
+       padding: 0.15rem 0.5rem; font-size: 0.8rem; }
+.tag:hover { background: #4a90d9; color: #fff; text-decoration: none; }
+.tag.active { background: #4a90d9; color: #fff; }
+.tag-heading { font-size: 1.1rem; margin-bottom: 1.25rem; color: #555; }
+.clear-tag { font-size: 0.85rem; color: #999; margin-left: 0.5rem; }
+.count { font-size: 0.75rem; opacity: 0.7; }
+
+/* ── Sidebar ── */
+.sidebar { background: #fff; border-radius: 10px; padding: 1.25rem;
+           border: 1px solid #eee; height: fit-content; position: sticky; top: 72px; }
+.sidebar h3 { font-size: 1rem; margin-bottom: 1rem; color: #555; }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.toc-sidebar .toc { font-size: 0.88rem; }
+.toc ul { padding-left: 1rem; list-style: none; }
+.toc li { margin: 0.3rem 0; }
+.toc a { color: #555; }
+.toc a:hover { color: #4a90d9; }
+
+/* ── Post Detail ── */
+.post-header { margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #eee; }
+.post-header h1 { font-size: 2rem; line-height: 1.3; margin-top: 0.5rem; }
+
+/* ── Markdown Body ── */
+.markdown-body { font-size: 1.05rem; line-height: 1.85; }
+.markdown-body h1,.markdown-body h2,.markdown-body h3,
+.markdown-body h4,.markdown-body h5 { margin: 1.8rem 0 0.8rem; line-height: 1.3; }
+.markdown-body h2 { font-size: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.4rem; }
+.markdown-body h3 { font-size: 1.2rem; }
+.markdown-body p { margin: 0 0 1rem; }
+.markdown-body ul, .markdown-body ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+.markdown-body li { margin: 0.3rem 0; }
+.markdown-body blockquote { border-left: 4px solid #4a90d9; background: #f0f6ff;
+                             padding: 0.75rem 1rem; margin: 1.5rem 0; border-radius: 0 6px 6px 0; }
+.markdown-body blockquote p { margin: 0; color: #555; }
+.markdown-body code { background: #f4f4f4; padding: 0.15rem 0.4rem;
+                      border-radius: 4px; font-size: 0.9em; font-family: "Fira Code", monospace; }
+.markdown-body pre { background: #1e1e2e; border-radius: 8px; padding: 1.25rem;
+                     overflow-x: auto; margin: 1.5rem 0; }
+.markdown-body pre code { background: none; color: #cdd6f4; font-size: 0.9rem; padding: 0; }
+.markdown-body table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; }
+.markdown-body th, .markdown-body td { border: 1px solid #e0e0e0; padding: 0.6rem 0.9rem; }
+.markdown-body th { background: #f5f5f5; font-weight: 600; }
+.markdown-body img { max-width: 100%; border-radius: 8px; margin: 1rem 0; }
+.markdown-body hr { border: none; border-top: 1px solid #eee; margin: 2rem 0; }
+.markdown-body a { color: #4a90d9; border-bottom: 1px solid transparent; }
+.markdown-body a:hover { border-bottom-color: #4a90d9; text-decoration: none; }
+
+/* ── Post Nav ── */
+.post-nav { display: flex; justify-content: space-between; margin-top: 3rem;
+            padding-top: 1.5rem; border-top: 1px solid #eee; font-size: 0.9rem; gap: 1rem; }
+.post-nav__prev, .post-nav__next { color: #4a90d9; max-width: 45%; }
+.post-nav__next { text-align: right; }
+
+/* ── Footer ── */
+.site-footer { background: #fff; border-top: 1px solid #eee;
+               padding: 1.5rem 0; margin-top: 3rem; text-align: center;
+               color: #aaa; font-size: 0.875rem; }
+
+/* ── Empty ── */
+.empty { color: #aaa; text-align: center; padding: 3rem 0; }

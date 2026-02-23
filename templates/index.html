@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if active_tag %}#{{ active_tag }} · {% endif %}文章列表
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <!-- 左侧：文章列表 -->
+  <section class="post-list">
+    {% if active_tag %}
+      <h2 class="tag-heading">标签：<span class="tag">#{{ active_tag }}</span>
+        <a href="/blog" class="clear-tag">× 清除</a>
+      </h2>
+    {% endif %}
+
+    {% if posts %}
+      {% for post in posts %}
+      <article class="post-card">
+        <div class="post-meta">
+          <time>{{ post.date_str }}</time>
+          {% for tag in post.tags %}
+            <a href="/blog/tag/{{ tag }}" class="tag">#{{ tag }}</a>
+          {% endfor %}
+        </div>
+        <h2><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h2>
+        <p class="post-summary">{{ post.summary }}</p>
+        <a href="/blog/{{ post.slug }}" class="read-more">阅读全文 →</a>
+      </article>
+      {% endfor %}
+    {% else %}
+      <p class="empty">暂无文章。</p>
+    {% endif %}
+  </section>
+
+  <!-- 右侧：标签云 -->
+  <aside class="sidebar">
+    <h3>标签</h3>
+    <div class="tag-cloud">
+      {% for tag, count in tags.items() %}
+        <a href="/blog/tag/{{ tag }}" class="tag {% if active_tag == tag %}active{% endif %}">
+          #{{ tag }} <span class="count">{{ count }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

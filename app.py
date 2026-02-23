@@ -11,7 +11,7 @@ import yaml
 
 app = Flask(__name__)
 #app.secret_key = secrets.token_hex(32)  # 每次重启会变，如需持久化请替换为固定字符串
-app.secret_key = f5eaeae85879177c50793d04a06808c428d7c661e43c88459297551f182b6712
+app.secret_key = "f5eaeae85879177c50793d04a06808c428d7c661e43c88459297551f182b6712"
 
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "posts")
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")

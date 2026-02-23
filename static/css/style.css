@@ -21,6 +21,8 @@ a:hover { text-decoration: underline; }
 .site-title { font-size: 1.3rem; font-weight: 700; color: #333; }
 .site-header nav { display: flex; align-items: center; gap: 1.5rem; }
 .site-header nav a { color: #555; font-size: 0.95rem; }
+.nav-admin-btn { background: #4a90d9; color: #fff !important; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem; }
+.nav-admin-btn:hover { background: #357abd; text-decoration: none; }
 
 /* ── Search ── */
 .search-wrap { position: relative; }

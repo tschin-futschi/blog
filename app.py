@@ -379,10 +379,13 @@ def terminal_exec():
             return jsonify({"output": f"⚠️ 命令被阻止：{b}"})
 
     try:
+        env = os.environ.copy()
+        env["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        
         result = subprocess.run(
             cmd, shell=True, capture_output=True, text=True,
             timeout=15, cwd=os.path.dirname(__file__),
-            env=os.environ.copy()
+            env=env
         )
         stdout = result.stdout or ""
         stderr = result.stderr or ""

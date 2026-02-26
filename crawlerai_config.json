@@ -1,0 +1,47 @@
+{
+  "sources": [
+    {
+      "name": "VentureBeat AI",
+      "name_zh": "VentureBeat AI",
+      "url": "https://venturebeat.com/category/ai/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "MIT Technology Review",
+      "name_zh": "MIT 科技评论",
+      "url": "https://www.technologyreview.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "36Kr AI",
+      "name_zh": "36氪",
+      "url": "https://36kr.com/feed",
+      "lang": "zh"
+    },
+    {
+      "name": "Jiqizhixin",
+      "name_zh": "机器之心",
+      "url": "https://www.jiqizhixin.com/rss",
+      "lang": "zh"
+    },
+    {
+      "name": "Reddit AI",
+      "name_zh": "Reddit AI 社区",
+      "url": "https://www.reddit.com/r/artificial/.rss",
+      "lang": "en"
+    }
+  ],
+  "keywords": {
+    "en": [
+      "ai", "artificial intelligence", "machine learning", "deep learning",
+      "llm", "gpt", "claude", "gemini", "openai", "anthropic", "google ai",
+      "neural network", "chatbot", "generative ai", "transformer",
+      "large language model", "computer vision", "nlp"
+    ],
+    "zh": [
+      "人工智能", "机器学习", "深度学习", "大模型", "语言模型",
+      "神经网络", "生成式", "ChatGPT", "Claude", "Gemini",
+      "OpenAI", "Anthropic", "自然语言", "计算机视觉", "AI"
+    ]
+  }
+}

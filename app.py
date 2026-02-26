@@ -10,16 +10,13 @@ import markdown
 import yaml
 
 app = Flask(__name__)
-#app.secret_key = secrets.token_hex(32)  # 每次重启会变，如需持久化请替换为固定字符串
 app.secret_key = "f5eaeae85879177c50793d04a06808c428d7c661e43c88459297551f182b6712"
 
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "posts")
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
 
 
-# ─────────────────────────────────────────
-# 用户管理
-# ─────────────────────────────────────────
+# ── 用户管理 ──────────────────────────────────────────────────────────────────
 
 def hash_password(password: str) -> str:
     return hashlib.sha256(password.encode()).hexdigest()
@@ -27,7 +24,6 @@ def hash_password(password: str) -> str:
 
 def load_users() -> dict:
     if not os.path.exists(USERS_FILE):
-        # 默认创建 admin 账户，密码 admin123
         default = {"admin": hash_password("admin123")}
         save_users(default)
         return default
@@ -50,12 +46,10 @@ def login_required(f):
     return decorated
 
 
-# ─────────────────────────────────────────
-# 核心：解析 Markdown 文件
-# ─────────────────────────────────────────
+# ── 核心：解析 Markdown 文件 ──────────────────────────────────────────────────
 
-def parse_post(filename: str) -> dict | None:
-    filepath = os.path.join(POSTS_DIR, filename)
+def parse_post(filepath: str) -> dict | None:
+    """解析单篇文章，支持 posts/ 下任意子目录"""
     if not os.path.exists(filepath):
         return None
 
@@ -72,11 +66,19 @@ def parse_post(filename: str) -> dict | None:
             pass
         content = raw[fm_match.end():]
 
-    slug = filename[:-3]
+    # slug 使用相对于 posts/ 的路径，例如 ai/2026-02-26-ai-news-digest
+    rel_path = os.path.relpath(filepath, POSTS_DIR)
+    slug = rel_path.replace("\\", "/").replace(".md", "")
+
+    # 分类（子目录名称），例如 ai、finance
+    parts = slug.split("/")
+    category = parts[0] if len(parts) > 1 else "general"
+
+    filename = os.path.basename(filepath)
 
     date = front_matter.get("date")
     if not date:
-        date_match = re.match(r"(\d{4}-\d{2}-\d{2})", slug)
+        date_match = re.match(r"(\d{4}-\d{2}-\d{2})", filename)
         if date_match:
             try:
                 date = datetime.strptime(date_match.group(1), "%Y-%m-%d").date()
@@ -100,35 +102,46 @@ def parse_post(filename: str) -> dict | None:
 
     return {
         "slug": slug,
+        "category": category,
         "filename": filename,
-        "title": front_matter.get("title", slug),
+        "filepath": filepath,
+        "title": front_matter.get("title", filename),
         "date": date,
         "date_str": date.strftime("%Y年%m月%d日") if date else "未知日期",
         "tags": tags,
-        "summary": front_matter.get("summary", content[:120].strip() + "…"),
+        "summary": front_matter.get("summary", content[:120].strip() + "..."),
         "content": html_content,
         "toc": getattr(md, "toc", ""),
         "raw": raw,
     }
 
 
-def get_all_posts() -> list[dict]:
+def get_all_posts(category: str = None) -> list:
+    """递归扫描 posts/ 及其所有子目录，返回所有文章"""
     if not os.path.exists(POSTS_DIR):
         os.makedirs(POSTS_DIR)
         return []
 
     posts = []
-    for filename in os.listdir(POSTS_DIR):
-        if filename.endswith(".md"):
-            post = parse_post(filename)
+    for root, dirs, files in os.walk(POSTS_DIR):
+        # 忽略隐藏目录
+        dirs[:] = [d for d in dirs if not d.startswith(".")]
+        for filename in files:
+            if not filename.endswith(".md"):
+                continue
+            filepath = os.path.join(root, filename)
+            post = parse_post(filepath)
             if post:
+                # 如果指定了分类则过滤
+                if category and post["category"] != category:
+                    continue
                 posts.append(post)
 
     posts.sort(key=lambda p: p["date"] or datetime.min.date(), reverse=True)
     return posts
 
 
-def get_all_tags(posts: list[dict]) -> dict:
+def get_all_tags(posts: list) -> dict:
     tag_count = {}
     for post in posts:
         for tag in post["tags"]:
@@ -136,11 +149,19 @@ def get_all_tags(posts: list[dict]) -> dict:
     return dict(sorted(tag_count.items(), key=lambda x: x[1], reverse=True))
 
 
+def get_all_categories() -> dict:
+    """获取所有分类及其文章数量"""
+    posts = get_all_posts()
+    cat_count = {}
+    for post in posts:
+        cat = post["category"]
+        cat_count[cat] = cat_count.get(cat, 0) + 1
+    return cat_count
+
+
 def make_filename(title: str, date: str = None) -> str:
-    """根据标题和日期生成安全的文件名"""
     if not date:
         date = datetime.now().strftime("%Y-%m-%d")
-    # 将标题转为 slug（移除特殊字符，空格换成横线）
     slug = re.sub(r"[^\w\u4e00-\u9fff\s-]", "", title.lower())
     slug = re.sub(r"[\s_]+", "-", slug).strip("-")
     if not slug:
@@ -148,22 +169,30 @@ def make_filename(title: str, date: str = None) -> str:
     return f"{date}-{slug}.md"
 
 
-# ─────────────────────────────────────────
-# 公开路由
-# ─────────────────────────────────────────
+# ── 公开路由 ──────────────────────────────────────────────────────────────────
 
 @app.route("/")
 @app.route("/blog")
 def index():
     posts = get_all_posts()
     tags = get_all_tags(posts)
-    return render_template("index.html", posts=posts, tags=tags)
+    categories = get_all_categories()
+    return render_template("index.html", posts=posts, tags=tags, categories=categories)
 
 
-@app.route("/blog/<slug>")
+@app.route("/blog/category/<category>")
+def category_filter(category: str):
+    posts = get_all_posts(category=category)
+    tags = get_all_tags(posts)
+    categories = get_all_categories()
+    return render_template("index.html", posts=posts, tags=tags, categories=categories, active_category=category)
+
+
+@app.route("/blog/<path:slug>")
 def post_detail(slug: str):
-    filename = slug + ".md"
-    post = parse_post(filename)
+    # slug 可能是 ai/2026-02-26-ai-news-digest
+    filepath = os.path.join(POSTS_DIR, slug + ".md")
+    post = parse_post(filepath)
     if not post:
         abort(404)
 
@@ -181,7 +210,8 @@ def tag_filter(tag: str):
     all_posts = get_all_posts()
     posts = [p for p in all_posts if tag in p["tags"]]
     tags = get_all_tags(all_posts)
-    return render_template("index.html", posts=posts, tags=tags, active_tag=tag)
+    categories = get_all_categories()
+    return render_template("index.html", posts=posts, tags=tags, categories=categories, active_tag=tag)
 
 
 @app.route("/blog/search")
@@ -196,6 +226,7 @@ def search():
             post["title"].lower(),
             post["summary"].lower(),
             " ".join(post["tags"]).lower(),
+            post["category"].lower(),
         ])
         if q in searchable:
             results.append({
@@ -204,14 +235,13 @@ def search():
                 "date_str": post["date_str"],
                 "summary": post["summary"],
                 "tags": post["tags"],
+                "category": post["category"],
             })
 
     return jsonify(results)
 
 
-# ─────────────────────────────────────────
-# 登录 / 登出
-# ─────────────────────────────────────────
+# ── 登录 / 登出 ───────────────────────────────────────────────────────────────
 
 @app.route("/admin/login", methods=["GET", "POST"])
 def login():
@@ -233,15 +263,14 @@ def logout():
     return redirect(url_for("login"))
 
 
-# ─────────────────────────────────────────
-# 后台管理路由
-# ─────────────────────────────────────────
+# ── 后台管理路由 ──────────────────────────────────────────────────────────────
 
 @app.route("/admin")
 @login_required
 def admin_index():
     posts = get_all_posts()
-    return render_template("admin/index.html", posts=posts)
+    categories = get_all_categories()
+    return render_template("admin/index.html", posts=posts, categories=categories)
 
 
 @app.route("/admin/new", methods=["GET", "POST"])
@@ -252,28 +281,31 @@ def admin_new():
         content = request.form.get("content", "")
         date = request.form.get("date", datetime.now().strftime("%Y-%m-%d"))
         tags = request.form.get("tags", "")
+        category = request.form.get("category", "general").strip()
 
         filename = make_filename(title, date)
-        filepath = os.path.join(POSTS_DIR, filename)
+        # 保存到对应分类子目录
+        category_dir = os.path.join(POSTS_DIR, category)
+        os.makedirs(category_dir, exist_ok=True)
+        filepath = os.path.join(category_dir, filename)
 
-        # 构建 Front Matter
         tags_list = [t.strip() for t in tags.split(",") if t.strip()]
         front_matter = f"---\ntitle: {title}\ndate: {date}\ntags: {tags_list}\n---\n\n"
-        
+
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(front_matter + content)
 
-        flash(f"文章已创建：{filename}")
+        flash(f"文章已创建：{category}/{filename}")
         return redirect(url_for("admin_index"))
 
-    return render_template("admin/edit.html", post=None, today=datetime.now().strftime("%Y-%m-%d"))
+    categories = get_all_categories()
+    return render_template("admin/edit.html", post=None, today=datetime.now().strftime("%Y-%m-%d"), categories=categories)
 
 
-@app.route("/admin/edit/<slug>", methods=["GET", "POST"])
+@app.route("/admin/edit/<path:slug>", methods=["GET", "POST"])
 @login_required
 def admin_edit(slug: str):
-    filename = slug + ".md"
-    filepath = os.path.join(POSTS_DIR, filename)
+    filepath = os.path.join(POSTS_DIR, slug + ".md")
 
     if not os.path.exists(filepath):
         abort(404)
@@ -288,18 +320,17 @@ def admin_edit(slug: str):
     with open(filepath, "r", encoding="utf-8") as f:
         raw = f.read()
 
-    post = {"slug": slug, "filename": filename, "raw": raw}
+    post = {"slug": slug, "filename": os.path.basename(filepath), "raw": raw}
     return render_template("admin/edit.html", post=post, today=datetime.now().strftime("%Y-%m-%d"))
 
 
-@app.route("/admin/delete/<slug>", methods=["POST"])
+@app.route("/admin/delete/<path:slug>", methods=["POST"])
 @login_required
 def admin_delete(slug: str):
-    filename = slug + ".md"
-    filepath = os.path.join(POSTS_DIR, filename)
+    filepath = os.path.join(POSTS_DIR, slug + ".md")
     if os.path.exists(filepath):
         os.remove(filepath)
-        flash(f"文章 {filename} 已删除")
+        flash(f"文章 {slug} 已删除")
     return redirect(url_for("admin_index"))
 
 
@@ -307,24 +338,26 @@ def admin_delete(slug: str):
 @login_required
 def admin_upload():
     file = request.files.get("file")
+    category = request.form.get("category", "general").strip()
+
     if not file or not file.filename.endswith(".md"):
         flash("请上传 .md 文件")
         return redirect(url_for("admin_index"))
 
-    # 自动生成文件名：日期前缀 + 原文件名
     original_name = os.path.splitext(file.filename)[0]
     safe_name = re.sub(r"[^\w\u4e00-\u9fff-]", "-", original_name).strip("-")
     date_prefix = datetime.now().strftime("%Y-%m-%d")
-    
-    # 如果文件名已经有日期前缀则不重复添加
+
     if re.match(r"^\d{4}-\d{2}-\d{2}", safe_name):
         filename = safe_name + ".md"
     else:
         filename = f"{date_prefix}-{safe_name}.md"
 
-    filepath = os.path.join(POSTS_DIR, filename)
+    category_dir = os.path.join(POSTS_DIR, category)
+    os.makedirs(category_dir, exist_ok=True)
+    filepath = os.path.join(category_dir, filename)
     file.save(filepath)
-    flash(f"文件已上传：{filename}")
+    flash(f"文件已上传：{category}/{filename}")
     return redirect(url_for("admin_index"))
 
 
@@ -355,9 +388,7 @@ def admin_users():
     return render_template("admin/users.html", users=users)
 
 
-# ─────────────────────────────────────────
-# 网页终端（WebSocket-free 轮询方式）
-# ─────────────────────────────────────────
+# ── 在线终端 ──────────────────────────────────────────────────────────────────
 
 @app.route("/admin/terminal")
 @login_required
@@ -381,7 +412,7 @@ def terminal_exec():
     try:
         env = os.environ.copy()
         env["PATH"] = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-        
+
         result = subprocess.run(
             cmd, shell=True, capture_output=True, text=True,
             timeout=15, cwd=os.path.dirname(__file__),
@@ -390,7 +421,7 @@ def terminal_exec():
         stdout = result.stdout or ""
         stderr = result.stderr or ""
         output = stdout + stderr
-        return jsonify({"output": output if output else "(无输出，返回码: " + str(result.returncode) + ")"})
+        return jsonify({"output": output if output else f"(无输出，返回码: {result.returncode})"})
     except subprocess.TimeoutExpired:
         return jsonify({"output": "⚠️ 命令执行超时（15秒）"})
     except Exception as e:

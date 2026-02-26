@@ -373,23 +373,25 @@ def terminal_exec():
     if not cmd:
         return jsonify({"output": ""})
 
-    # 安全限制：禁止危险命令
     BLOCKED = ["rm -rf /", "mkfs", "dd if=", ":(){:|:&};:"]
     for b in BLOCKED:
         if b in cmd:
-            return jsonify({"output": f"⚠️ 命令被禁止：{b}"})
+            return jsonify({"output": f"⚠️ 命令被阻止：{b}"})
 
     try:
         result = subprocess.run(
             cmd, shell=True, capture_output=True, text=True,
-            timeout=15, cwd=os.path.dirname(__file__)
+            timeout=15, cwd=os.path.dirname(__file__),
+            env=os.environ.copy()
         )
-        output = result.stdout + result.stderr
-        return jsonify({"output": output or "(无输出)"})
+        stdout = result.stdout or ""
+        stderr = result.stderr or ""
+        output = stdout + stderr
+        return jsonify({"output": output if output else "(无输出，返回码: " + str(result.returncode) + ")"})
     except subprocess.TimeoutExpired:
         return jsonify({"output": "⚠️ 命令执行超时（15秒）"})
     except Exception as e:
-        return jsonify({"output": f"错误：{str(e)}"})
+        return jsonify({"output": f"错误：{type(e).__name__}: {str(e)}"})
 
 
 @app.errorhandler(404)

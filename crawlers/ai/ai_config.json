@@ -21,7 +21,19 @@
     {
       "name": "Jiqizhixin",
       "name_zh": "机器之心",
-      "url": "https://www.jiqizhixin.com/rss",
+      "url": "http://plink.anyfeeder.com/weixin/almosthuman2014",
+      "lang": "zh"
+    },
+    {
+      "name": "Qbitai",
+      "name_zh": "量子位",
+      "url": "https://www.qbitai.com/feed",
+      "lang": "zh"
+    },
+    {
+      "name": "Xinzhiyuan",
+      "name_zh": "新智元",
+      "url": "https://plink.anyfeeder.com/weixin/AI_era",
       "lang": "zh"
     },
     {

@@ -12,6 +12,42 @@
       "url": "https://www.technologyreview.com/feed/",
       "lang": "en"
     },
+        {
+      "name": "Google AI Blog",
+      "name_zh": "Google AI 博客",
+      "url": "https://research.google/blog/rss",
+      "lang": "en"
+    },
+    {
+      "name": "The Verge AI",
+      "name_zh": "The Verge AI",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
+      "lang": "en"
+    },
+    {
+      "name": "Ars Technica",
+      "name_zh": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "lang": "en"
+    },
+    {
+      "name": "TechCrunch AI",
+      "name_zh": "TechCrunch AI",
+      "url": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "The Guardian AI",
+      "name_zh": "卫报 AI",
+      "url": "https://www.theguardian.com/technology/artificialintelligenceai/rss",
+      "lang": "en"
+    },
+    {
+      "name": "AI News",
+      "name_zh": "AI News",
+      "url": "https://www.artificialintelligence-news.com/feed/rss/",
+      "lang": "en"
+    },
     {
       "name": "36Kr AI",
       "name_zh": "36氪",

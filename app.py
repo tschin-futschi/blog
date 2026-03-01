@@ -10,7 +10,9 @@ import markdown
 import yaml
 
 app = Flask(__name__)
-app.secret_key = "f5eaeae85879177c50793d04a06808c428d7c661e43c88459297551f182b6712"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+if not app.secret_key:
+    raise RuntimeError("请设置环境变量 FLASK_SECRET_KEY")
 
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "posts")
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")

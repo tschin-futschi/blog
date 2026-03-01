@@ -171,7 +171,7 @@ def make_filename(title: str, date: str = None) -> str:
 
 @app.context_processor
 def inject_categories():
-    return {"all_categories": get_all_categories()}
+    return {"all_categories": get_all_categories(), "now":datetime.now()}
 
 
 

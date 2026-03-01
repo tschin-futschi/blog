@@ -1,0 +1,77 @@
+{
+  "title_zh": "金融资讯简报",
+  "title_en": "Finance News Digest",
+  "slug": "finance-news-digest",
+  "tags": ["金融", "财经", "简报"],
+  "summary_tpl": "{date_zh} 全球金融财经资讯汇总，涵盖股市、宏观经济、加密货币等动态。",
+  "sources": [
+    {
+      "name": "Reuters Finance",
+      "name_zh": "路透财经",
+      "url": "https://feeds.reuters.com/reuters/businessNews",
+      "lang": "en"
+    },
+    {
+      "name": "Bloomberg Markets",
+      "name_zh": "彭博市场",
+      "url": "https://feeds.bloomberg.com/markets/news.rss",
+      "lang": "en"
+    },
+    {
+      "name": "Financial Times",
+      "name_zh": "金融时报",
+      "url": "https://www.ft.com/rss/home",
+      "lang": "en"
+    },
+    {
+      "name": "WSJ Markets",
+      "name_zh": "华尔街日报市场",
+      "url": "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
+      "lang": "en"
+    },
+    {
+      "name": "CNBC Finance",
+      "name_zh": "CNBC 财经",
+      "url": "https://www.cnbc.com/id/10000664/device/rss/rss.html",
+      "lang": "en"
+    },
+    {
+      "name": "Investing.com",
+      "name_zh": "Investing.com",
+      "url": "https://www.investing.com/rss/news.rss",
+      "lang": "en"
+    },
+    {
+      "name": "Caixin",
+      "name_zh": "财新网",
+      "url": "https://www.caixin.com/rss/caixinenglish.xml",
+      "lang": "zh"
+    },
+    {
+      "name": "Yicai",
+      "name_zh": "第一财经",
+      "url": "https://www.yicai.com/rss",
+      "lang": "zh"
+    },
+    {
+      "name": "Sina Finance",
+      "name_zh": "新浪财经",
+      "url": "https://finance.sina.com.cn/rss/finance.xml",
+      "lang": "zh"
+    }
+  ],
+  "keywords": {
+    "en": [
+      "stock", "market", "finance", "economy", "gdp", "inflation", "interest rate",
+      "federal reserve", "fed", "bank", "investment", "trading", "crypto",
+      "bitcoin", "nasdaq", "s&p", "dow jones", "earnings", "ipo", "bond",
+      "recession", "monetary policy", "fiscal", "currency", "forex"
+    ],
+    "zh": [
+      "股市", "股票", "金融", "经济", "通胀", "利率", "美联储",
+      "央行", "投资", "交易", "加密货币", "比特币", "纳斯达克",
+      "A股", "港股", "债券", "财政", "货币政策", "汇率", "IPO",
+      "上市", "基金", "理财", "宏观经济", "GDP"
+    ]
+  }
+}

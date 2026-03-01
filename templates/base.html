@@ -10,9 +10,18 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a href="/blog" class="site-title">📝 我的博客</a>
-      <nav>
-        <a href="/blog">文章</a>
+      <div class="header-left">
+        <a href="/blog" class="site-title">📝 我的博客</a>
+        <nav class="category-nav">
+          <a href="/blog/category/ai" class="category-nav-item {% if request.path == '/blog/category/ai' %}active{% endif %}">AI</a>
+          {% for cat in all_categories %}
+            {% if cat != 'ai' and cat != 'general' %}
+              <a href="/blog/category/{{ cat }}" class="category-nav-item {% if request.path == '/blog/category/' + cat %}active{% endif %}">{{ cat }}</a>
+            {% endif %}
+          {% endfor %}
+        </nav>
+      </div>
+      <nav class="header-right">
         <a href="/admin" class="nav-admin-btn">⚙️ 后台</a>
         <div class="search-wrap">
           <input type="text" id="search-input" placeholder="搜索文章…" autocomplete="off" />

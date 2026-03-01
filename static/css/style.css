@@ -18,9 +18,16 @@ a:hover { text-decoration: underline; }
 .site-header { background: #fff; border-bottom: 1px solid #e8e8e8;
                padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
 .site-header .container { display: flex; align-items: center; justify-content: space-between; }
-.site-title { font-size: 1.3rem; font-weight: 700; color: #333; }
-.site-header nav { display: flex; align-items: center; gap: 1.5rem; }
-.site-header nav a { color: #555; font-size: 0.95rem; }
+.site-title { font-size: 1.3rem; font-weight: 700; color: #333; white-space: nowrap; }
+.header-left { display: flex; align-items: center; gap: 1.5rem; }
+.header-right { display: flex; align-items: center; gap: 1.5rem; }
+
+/* ── Category Nav (顶部横排) ── */
+.category-nav { display: flex; align-items: center; gap: 0.25rem; }
+.category-nav-item { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem;
+                     color: #555; transition: background 0.2s, color 0.2s; }
+.category-nav-item:hover { background: #eef4fb; color: #4a90d9; text-decoration: none; }
+.category-nav-item.active { background: #4a90d9; color: #fff; font-weight: 600; }
 .nav-admin-btn { background: #4a90d9; color: #fff !important; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.85rem; }
 .nav-admin-btn:hover { background: #357abd; text-decoration: none; }
 

@@ -169,7 +169,12 @@ def make_filename(title: str, date: str = None) -> str:
     return f"{date}-{slug}.md"
 
 
-# ── 公开路由 ──────────────────────────────────────────────────────────────────
+@app.context_processor
+def inject_categories():
+    return {"all_categories": get_all_categories()}
+
+
+
 
 @app.route("/")
 @app.route("/blog")

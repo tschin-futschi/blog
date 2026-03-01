@@ -122,3 +122,15 @@ a:hover { text-decoration: underline; }
 
 /* ── Empty ── */
 .empty { color: #aaa; text-align: center; padding: 3rem 0; }
+
+/* ── Categories Page ── */
+.categories-page { padding: 2rem 0; }
+.categories-title { font-size: 1.8rem; margin-bottom: 1.5rem; color: #333; }
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.25rem; }
+.category-card { background: #fff; border: 1px solid #eee; border-radius: 12px;
+                 padding: 1.75rem 1.25rem; text-align: center; color: #333;
+                 transition: box-shadow 0.2s, transform 0.2s; display: block; }
+.category-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.1); transform: translateY(-3px); text-decoration: none; color: #333; }
+.category-card__icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.category-card__name { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem; text-transform: capitalize; }
+.category-card__count { font-size: 0.85rem; color: #999; }

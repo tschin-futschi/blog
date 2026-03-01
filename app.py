@@ -10,7 +10,19 @@ import markdown
 import yaml
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY")
+
+# 从环境变量读取 secret key，生产环境必须设置 FLASK_SECRET_KEY
+# 本地开发时若未设置，自动生成一个临时 key（重启后 session 会失效，属正常现象）
+_secret = os.environ.get("FLASK_SECRET_KEY")
+if not _secret:
+    import warnings
+    warnings.warn(
+        "未设置环境变量 FLASK_SECRET_KEY，已使用随机临时 key。"
+        "生产环境请在 .env 或服务器环境变量中设置该值。",
+        stacklevel=1,
+    )
+    _secret = secrets.token_hex(32)
+app.secret_key = _secret
 
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "posts")
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
@@ -176,9 +188,27 @@ def inject_categories():
 
 
 
+CAT_ICONS = {
+    "ai":      "🤖",
+    "general": "📝",
+    "tech":    "💻",
+    "finance": "💰",
+    "life":    "🌱",
+    "travel":  "✈️",
+    "book":    "📚",
+    "news":    "📰",
+}
+
+
 @app.route("/")
 @app.route("/blog")
 def index():
+    categories = get_all_categories()
+    return render_template("categories.html", categories=categories, cat_icons=CAT_ICONS)
+
+
+@app.route("/blog/posts")
+def all_posts():
     posts = get_all_posts()
     tags = get_all_tags(posts)
     categories = get_all_categories()

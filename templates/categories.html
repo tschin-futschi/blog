@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}文章分类{% endblock %}
+
+{% block content %}
+<div class="categories-page">
+  <h1 class="categories-title">文章分类</h1>
+  <div class="categories-grid">
+    {% for cat, count in categories.items() %}
+    <a href="/blog/category/{{ cat }}" class="category-card">
+      <div class="category-card__icon">{{ cat_icons.get(cat, '📁') }}</div>
+      <div class="category-card__name">{{ cat }}</div>
+      <div class="category-card__count">{{ count }} 篇文章</div>
+    </a>
+    {% else %}
+      <p class="empty">暂无分类。</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

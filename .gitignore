@@ -1,4 +1,6 @@
-"user.json" 
-"posts/" 
+user.json 
+posts/ 
 users.json
 logs/
+__pycache__/
+venv/

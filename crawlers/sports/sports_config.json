@@ -102,9 +102,15 @@
       "lang": "zh"
     },
     {
-      "name": "Hupu",
-      "name_zh": "虎扑体育",
-      "url": "https://www.hupu.com/rss",
+      "name": "163 Sports",
+      "name_zh": "网易体育",
+      "url": "http://sports.163.com/special/sports_rss/",
+      "lang": "zh"
+    },
+    {
+      "name": "QQ Sports",
+      "name_zh": "腾讯体育",
+      "url": "https://rss.qq.com/sports.xml",
       "lang": "zh"
     }
   ],

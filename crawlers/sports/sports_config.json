@@ -1,0 +1,126 @@
+{
+  "title_zh": "体育资讯简报",
+  "title_en": "Sports News Digest",
+  "slug": "sports-news-digest",
+  "tags": ["体育", "足球", "篮球", "简报"],
+  "summary_tpl": "{date_zh} 足球篮球体育资讯汇总，涵盖中超、NBA、CBA、英超、欧冠等赛事动态。",
+  "sources": [
+    {
+      "name": "BBC Sport",
+      "name_zh": "BBC 体育",
+      "url": "https://feeds.bbci.co.uk/sport/rss.xml",
+      "lang": "en"
+    },
+    {
+      "name": "ESPN Soccer",
+      "name_zh": "ESPN 足球",
+      "url": "https://www.espn.com/espn/rss/soccer/news",
+      "lang": "en"
+    },
+    {
+      "name": "ESPN NBA",
+      "name_zh": "ESPN 篮球",
+      "url": "https://www.espn.com/espn/rss/nba/news",
+      "lang": "en"
+    },
+    {
+      "name": "CBS Sports",
+      "name_zh": "CBS 体育",
+      "url": "https://www.cbssports.com/rss/headlines/",
+      "lang": "en"
+    },
+    {
+      "name": "Bleacher Report Soccer",
+      "name_zh": "Bleacher Report 足球",
+      "url": "https://feeds.bleacherreport.com/articles/soccer.xml",
+      "lang": "en"
+    },
+    {
+      "name": "Bleacher Report NBA",
+      "name_zh": "Bleacher Report 篮球",
+      "url": "https://feeds.bleacherreport.com/articles/nba.xml",
+      "lang": "en"
+    },
+    {
+      "name": "The Guardian Football",
+      "name_zh": "卫报 足球",
+      "url": "https://www.theguardian.com/football/rss",
+      "lang": "en"
+    },
+    {
+      "name": "Sky Sports Football",
+      "name_zh": "天空体育 足球",
+      "url": "https://www.skysports.com/rss/12040",
+      "lang": "en"
+    },
+    {
+      "name": "Goal.com",
+      "name_zh": "Goal.com 足球",
+      "url": "https://www.goal.com/feeds/en/news",
+      "lang": "en"
+    },
+    {
+      "name": "FourFourTwo",
+      "name_zh": "FourFourTwo",
+      "url": "https://www.fourfourtwo.com/rss",
+      "lang": "en"
+    },
+    {
+      "name": "90min",
+      "name_zh": "90min 足球",
+      "url": "https://www.90min.com/posts.rss",
+      "lang": "en"
+    },
+    {
+      "name": "101 Great Goals",
+      "name_zh": "101 Great Goals",
+      "url": "https://www.101greatgoals.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "UEFA News",
+      "name_zh": "UEFA 官方",
+      "url": "https://www.uefa.com/rssfeed/newsrss.xml",
+      "lang": "en"
+    },
+    {
+      "name": "Sina Sports",
+      "name_zh": "新浪体育",
+      "url": "https://sports.sina.com.cn/rss/sport.xml",
+      "lang": "zh"
+    },
+    {
+      "name": "CCTV Sports",
+      "name_zh": "央视体育",
+      "url": "https://sports.cctv.com/rss/soccer.xml",
+      "lang": "zh"
+    },
+    {
+      "name": "Sohu Sports",
+      "name_zh": "搜狐体育",
+      "url": "https://sports.sohu.com/rss/football.xml",
+      "lang": "zh"
+    },
+    {
+      "name": "Hupu",
+      "name_zh": "虎扑体育",
+      "url": "https://www.hupu.com/rss",
+      "lang": "zh"
+    }
+  ],
+  "keywords": {
+    "en": [
+      "football", "soccer", "basketball", "nba", "premier league", "champions league",
+      "la liga", "serie a", "bundesliga", "ligue 1", "world cup", "euro",
+      "transfer", "goal", "match", "fixture", "standings", "squad",
+      "cba", "chinese super league", "lebron", "curry", "messi", "ronaldo",
+      "injury", "lineup", "referee", "var", "penalty", "playoff", "draft"
+    ],
+    "zh": [
+      "足球", "篮球", "NBA", "CBA", "中超", "英超", "欧冠", "西甲", "意甲", "德甲",
+      "法甲", "世界杯", "欧洲杯", "亚冠", "转会", "进球", "比赛", "积分榜",
+      "梅西", "C罗", "詹姆斯", "库里", "武磊", "国足", "男篮", "女足",
+      "裁判", "点球", "季后赛", "选秀", "伤病", "首发", "主场", "客场"
+    ]
+  }
+}

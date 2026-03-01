@@ -10,9 +10,7 @@ import markdown
 import yaml
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY")
-if not app.secret_key:
-    raise RuntimeError("请设置环境变量 FLASK_SECRET_KEY")
+app.secret_key = "f5eaeae85879177c50793d04a06808c428d7c661e43c88459297551f182b6712"
 
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "posts")
 USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
@@ -243,6 +241,12 @@ def search():
     return jsonify(results)
 
 
+# ── 工具函数 ──────────────────────────────────────────────────────────────────
+
+def get_client_ip() -> str:
+    return request.headers.get("X-Forwarded-For", request.remote_addr).split(",")[0].strip()
+
+
 # ── 登录 / 登出 ───────────────────────────────────────────────────────────────
 
 @app.route("/admin/login", methods=["GET", "POST"])
@@ -392,10 +396,46 @@ def admin_users():
 
 # ── 在线终端 ──────────────────────────────────────────────────────────────────
 
+# 白名单：只允许以下命令前缀
+TERMINAL_WHITELIST = [
+    "git pull",
+    "git status",
+    "git log --oneline",
+    "systemctl restart blog",
+    "systemctl status blog",
+    "systemctl stop blog",
+    "systemctl start blog",
+    "ls",
+    "ls -la",
+    "cat logs/",
+    "cat posts/",
+    "pwd",
+]
+
+TERMINAL_LOG = os.path.join(os.path.dirname(__file__), "logs", "terminal.log")
+
+
+def log_terminal_cmd(username: str, ip: str, cmd: str, allowed: bool):
+    """记录终端操作日志"""
+    os.makedirs(os.path.dirname(TERMINAL_LOG), exist_ok=True)
+    status = "ALLOWED" if allowed else "BLOCKED"
+    with open(TERMINAL_LOG, "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] [{status}] user={username} ip={ip} cmd={cmd}\n")
+
+
+def is_cmd_allowed(cmd: str) -> bool:
+    """检查命令是否在白名单中"""
+    cmd = cmd.strip()
+    for allowed in TERMINAL_WHITELIST:
+        if cmd == allowed or cmd.startswith(allowed + " ") or cmd.startswith(allowed + "/"):
+            return True
+    return False
+
+
 @app.route("/admin/terminal")
 @login_required
 def admin_terminal():
-    return render_template("admin/terminal.html")
+    return render_template("admin/terminal.html", whitelist=TERMINAL_WHITELIST)
 
 
 @app.route("/admin/terminal/exec", methods=["POST"])
@@ -403,13 +443,18 @@ def admin_terminal():
 def terminal_exec():
     import subprocess
     cmd = request.json.get("cmd", "").strip()
+    username = session.get("username", "unknown")
+    ip = get_client_ip()
+
     if not cmd:
         return jsonify({"output": ""})
 
-    BLOCKED = ["rm -rf /", "mkfs", "dd if=", ":(){:|:&};:"]
-    for b in BLOCKED:
-        if b in cmd:
-            return jsonify({"output": f"⚠️ 命令被阻止：{b}"})
+    if not is_cmd_allowed(cmd):
+        log_terminal_cmd(username, ip, cmd, allowed=False)
+        allowed_list = "\n".join(f"  - {w}" for w in TERMINAL_WHITELIST)
+        return jsonify({"output": f"⚠️ 命令不在白名单中，已拒绝：{cmd}\n\n允许的命令：\n{allowed_list}"})
+
+    log_terminal_cmd(username, ip, cmd, allowed=True)
 
     try:
         env = os.environ.copy()

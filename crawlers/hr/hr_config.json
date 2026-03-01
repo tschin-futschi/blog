@@ -1,0 +1,104 @@
+{
+  "title_zh": "HR职场资讯简报",
+  "title_en": "HR & Workplace News Digest",
+  "slug": "hr-news-digest",
+  "tags": ["HR", "人力资源", "职场", "简报"],
+  "summary_tpl": "{date_zh} HR人力资源与职场最新资讯汇总，涵盖招聘、薪酬、劳动法规、组织管理等动态。",
+  "sources": [
+    {
+      "name": "HR Dive",
+      "name_zh": "HR Dive",
+      "url": "https://www.hrdive.com/feeds/news/",
+      "lang": "en"
+    },
+    {
+      "name": "HR Executive",
+      "name_zh": "HR Executive",
+      "url": "https://hrexecutive.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "SHRM News",
+      "name_zh": "SHRM 人力资源协会",
+      "url": "https://www.shrm.org/rss/pages/rss.aspx",
+      "lang": "en"
+    },
+    {
+      "name": "Personnel Today",
+      "name_zh": "Personnel Today",
+      "url": "https://www.personneltoday.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "HR Grapevine",
+      "name_zh": "HR Grapevine",
+      "url": "https://www.hrgrapevine.com/rss",
+      "lang": "en"
+    },
+    {
+      "name": "HR Bartender",
+      "name_zh": "HR Bartender",
+      "url": "https://www.hrbartender.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "AIHR Blog",
+      "name_zh": "AIHR 人力资源学院",
+      "url": "https://www.aihr.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "HR Digest",
+      "name_zh": "HR Digest",
+      "url": "https://www.thehrdigest.com/feed/",
+      "lang": "en"
+    },
+    {
+      "name": "HRoot",
+      "name_zh": "HRoot 人力资源管理",
+      "url": "https://www.hroot.com/feed.hr",
+      "lang": "zh"
+    },
+    {
+      "name": "Renli68",
+      "name_zh": "人力资源68HR",
+      "url": "https://www.renli68.com/feed/",
+      "lang": "zh"
+    },
+    {
+      "name": "ChinaHRD",
+      "name_zh": "中人网",
+      "url": "https://www.chinahrd.net/feed/",
+      "lang": "zh"
+    },
+    {
+      "name": "MOHRSS",
+      "name_zh": "人力资源和社会保障部",
+      "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/dongtaixinwen/buneiyaowen/rss.xml",
+      "lang": "zh"
+    },
+    {
+      "name": "ChinaJob",
+      "name_zh": "中国就业网",
+      "url": "https://chinajob.mohrss.gov.cn/rss.xml",
+      "lang": "zh"
+    }
+  ],
+  "keywords": {
+    "en": [
+      "hr", "human resources", "recruitment", "hiring", "talent", "workforce",
+      "employee", "employer", "payroll", "compensation", "benefits", "onboarding",
+      "performance management", "diversity", "inclusion", "labor law", "workplace",
+      "remote work", "hybrid work", "layoff", "redundancy", "training", "learning",
+      "leadership", "culture", "engagement", "retention", "chro", "people management",
+      "job market", "salary", "headcount", "staffing"
+    ],
+    "zh": [
+      "人力资源", "HR", "招聘", "人才", "员工", "雇主", "薪酬", "绩效",
+      "劳动法", "劳动合同", "社保", "职场", "远程办公", "裁员", "培训",
+      "领导力", "企业文化", "员工福利", "组织管理", "人才管理", "职业发展",
+      "求职", "用工", "就业", "工资", "五险一金", "劳动关系", "人社部",
+      "猎头", "HRBP", "绩效考核", "组织架构"
+    ]
+  }
+}

@@ -10,7 +10,7 @@
   <section class="post-list">
     {% if active_tag %}
       <h2 class="tag-heading">标签：<span class="tag">#{{ active_tag }}</span>
-        <a href="/blog" class="clear-tag">× 清除</a>
+        <a href="/blog" class="clear-tag">清除筛选</a>
       </h2>
     {% endif %}
 
@@ -25,7 +25,7 @@
         </div>
         <h2><a href="/blog/{{ post.slug }}">{{ post.title }}</a></h2>
         <p class="post-summary">{{ post.summary }}</p>
-        <a href="/blog/{{ post.slug }}" class="read-more">阅读全文 →</a>
+        <a href="/blog/{{ post.slug }}" class="read-more">阅读全文</a>
       </article>
       {% endfor %}
     {% else %}
@@ -35,7 +35,7 @@
 
   <!-- 右侧：标签云 -->
   <aside class="sidebar">
-    <h3>标签</h3>
+    <h3>热门标签</h3>
     <div class="tag-cloud">
       {% for tag, count in tags.items() %}
         <a href="/blog/tag/{{ tag }}" class="tag {% if active_tag == tag %}active{% endif %}">

@@ -7,6 +7,7 @@
 BLOG_DIR="/home/echo/blog"
 PYTHON="$BLOG_DIR/venv/bin/python3"
 SCRIPT="$BLOG_DIR/crawlers/fetch_news.py"
+SYNC_SCRIPT="$BLOG_DIR/sync_db.py"
 
 run_crawler() {
     CATEGORY=$1
@@ -21,6 +22,13 @@ run_crawler() {
     echo "✓ [$CATEGORY] 完成"
 }
 
+sync_database() {
+    echo "▶ 同步文章到数据库..."
+    cd "$BLOG_DIR"
+    $PYTHON $SYNC_SCRIPT
+    echo "✓ 数据库同步完成"
+}
+
 TARGET=${1:-all}
 
 if [ "$TARGET" = "all" ]; then
@@ -28,6 +36,10 @@ if [ "$TARGET" = "all" ]; then
         CATEGORY=$(basename "$dir")
         run_crawler "$CATEGORY"
     done
+    # 所有爬虫完成后同步数据库
+    sync_database
 else
     run_crawler "$TARGET"
+    # 单个爬虫完成后同步数据库
+    sync_database
 fi

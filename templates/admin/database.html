@@ -1,0 +1,105 @@
+{% extends "admin/base.html" %}
+{% block title %}数据库管理{% endblock %}
+
+{% block content %}
+<div class="admin-header">
+  <h1>数据库管理</h1>
+  <div class="admin-actions">
+    <form method="post" action="{{ url_for('admin_database_sync') }}" style="display:inline;">
+      <button type="submit" class="btn btn-primary" onclick="return confirm('确定要重新同步文章到数据库吗？')">🔄 同步文章</button>
+    </form>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-value">{{ post_count }}</div>
+    <div class="stat-label">文章总数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ tag_count }}</div>
+    <div class="stat-label">标签总数</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ category_count }}</div>
+    <div class="stat-label">分类总数</div>
+  </div>
+</div>
+
+<h2 class="section-title">热门文章 TOP 10</h2>
+
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>排名</th>
+        <th>标题</th>
+        <th>分类</th>
+        <th>阅读量</th>
+        <th>最后更新</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in top_posts %}
+      <tr>
+        <td class="rank">{{ loop.index }}</td>
+        <td><a href="{{ url_for('post_detail', slug=post.slug) }}" target="_blank">{{ post.title }}</a></td>
+        <td>{{ post.category }}</td>
+        <td class="views">{{ post.views }}</td>
+        <td>{{ post.updated_at.strftime('%Y-%m-%d %H:%M') if post.updated_at else '-' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" style="text-align:center; color:#aaa; padding:2rem;">暂无数据</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<style>
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #e8e8e8;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4a90d9;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.rank {
+  font-weight: 600;
+  color: #4a90d9;
+}
+
+.views {
+  font-weight: 600;
+  color: #28a745;
+}
+</style>
+{% endblock %}

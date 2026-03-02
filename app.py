@@ -9,7 +9,14 @@ from flask import (Flask, render_template, abort, request, jsonify,
 import markdown
 import yaml
 
+# 导入数据库模块
+from database import init_database, get_post_from_db, get_posts_from_db, search_in_db, increment_views
+from models import Post, Tag
+
 app = Flask(__name__)
+
+# 初始化数据库
+init_database(app)
 
 # 从环境变量读取 secret key，生产环境必须设置 FLASK_SECRET_KEY
 # 本地开发时若未设置，自动生成一个临时 key（重启后 session 会失效，属正常现象）
@@ -204,7 +211,9 @@ CAT_ICONS = {
 @app.route("/blog")
 def index():
     categories = get_all_categories()
-    return render_template("categories.html", categories=categories, cat_icons=CAT_ICONS)
+    posts = get_all_posts()
+    recent_posts = posts[:6] if posts else []
+    return render_template("categories.html", categories=categories, cat_icons=CAT_ICONS, recent_posts=recent_posts)
 
 
 @app.route("/blog/posts")
@@ -237,7 +246,15 @@ def post_detail(slug: str):
     prev_post = all_posts[idx + 1] if idx >= 0 and idx + 1 < len(all_posts) else None
     next_post = all_posts[idx - 1] if idx > 0 else None
 
-    return render_template("post.html", post=post, prev_post=prev_post, next_post=next_post)
+    # 记录阅读量到数据库
+    db_post = get_post_from_db(slug)
+    views = 0
+    if db_post:
+        ip_address = get_client_ip()
+        user_agent = request.headers.get('User-Agent', '')
+        views = increment_views(db_post.id, ip_address, user_agent)
+
+    return render_template("post.html", post=post, prev_post=prev_post, next_post=next_post, views=views)
 
 
 @app.route("/blog/tag/<tag>")
@@ -251,19 +268,57 @@ def tag_filter(tag: str):
 
 @app.route("/blog/search")
 def search():
-    q = request.args.get("q", "").strip().lower()
+    q = request.args.get("q", "").strip()
     if not q:
         return jsonify([])
 
+    q_lower = q.lower()
     results = []
-    for post in get_all_posts():
-        searchable = " ".join([
-            post["title"].lower(),
-            post["summary"].lower(),
-            " ".join(post["tags"]).lower(),
-            post["category"].lower(),
-        ])
-        if q in searchable:
+    all_posts = get_all_posts()
+
+    for post in all_posts:
+        # 构建可搜索内容
+        title_lower = post["title"].lower()
+        summary_lower = post["summary"].lower()
+        tags_lower = " ".join(post["tags"]).lower()
+        category_lower = post["category"].lower()
+        content_lower = clean_html(post["content"]).lower()
+
+        searchable = f"{title_lower} {summary_lower} {tags_lower} {category_lower} {content_lower}"
+
+        # 计算相关性分数
+        score = 0
+
+        # 标题匹配权重最高
+        if q_lower in title_lower:
+            score += 100
+            # 完全匹配额外加分
+            if q_lower == title_lower:
+                score += 50
+
+        # 摘要匹配
+        if q_lower in summary_lower:
+            score += 50
+
+        # 标签匹配
+        if q_lower in tags_lower:
+            score += 40
+
+        # 分类匹配
+        if q_lower in category_lower:
+            score += 30
+
+        # 内容匹配
+        if q_lower in content_lower:
+            score += 20
+
+        # 计算出现次数
+        score += searchable.count(q_lower) * 5
+
+        if score > 0:
+            # 提取匹配上下文用于高亮
+            match_context = extract_match_context(clean_html(post["content"]), q, 150)
+
             results.append({
                 "slug": post["slug"],
                 "title": post["title"],
@@ -271,9 +326,44 @@ def search():
                 "summary": post["summary"],
                 "tags": post["tags"],
                 "category": post["category"],
+                "score": score,
+                "match_context": match_context,
             })
 
+    # 按相关性排序
+    results.sort(key=lambda x: x["score"], reverse=True)
+    # 限制结果数量
+    results = results[:20]
+
     return jsonify(results)
+
+
+def extract_match_context(content: str, query: str, max_length: int = 150) -> str:
+    """提取包含搜索词的上下文片段"""
+    if not content:
+        return ""
+
+    query_lower = query.lower()
+    content_lower = content.lower()
+
+    # 查找第一个匹配位置
+    match_pos = content_lower.find(query_lower)
+    if match_pos == -1:
+        return content[:max_length]
+
+    # 计算上下文范围
+    start = max(0, match_pos - max_length // 2)
+    end = min(len(content), match_pos + max_length + len(query))
+
+    context = content[start:end]
+
+    # 添加省略号
+    if start > 0:
+        context = "..." + context
+    if end < len(content):
+        context = context + "..."
+
+    return context.strip()
 
 
 # ── 工具函数 ──────────────────────────────────────────────────────────────────
@@ -427,6 +517,39 @@ def admin_users():
         return redirect(url_for("admin_users"))
 
     return render_template("admin/users.html", users=users)
+
+
+# ── 数据库管理 ────────────────────────────────────────────────────────────────
+
+@app.route("/admin/database")
+@login_required
+def admin_database():
+    """数据库管理页面"""
+    # 统计数据
+    post_count = Post.query.count()
+    tag_count = Tag.query.count()
+    category_count = len(get_all_categories())
+
+    # 阅读量排行
+    top_posts = Post.query.order_by(Post.views.desc()).limit(10).all()
+
+    return render_template("admin/database.html",
+                         post_count=post_count,
+                         tag_count=tag_count,
+                         category_count=category_count,
+                         top_posts=top_posts)
+
+
+@app.route("/admin/database/sync", methods=["POST"])
+@login_required
+def admin_database_sync():
+    """手动同步文章到数据库"""
+    try:
+        sync_posts_from_files(POSTS_DIR)
+        flash("文章同步成功！")
+    except Exception as e:
+        flash(f"同步失败：{str(e)}")
+    return redirect(url_for("admin_database"))
 
 
 # ── 在线终端 ──────────────────────────────────────────────────────────────────

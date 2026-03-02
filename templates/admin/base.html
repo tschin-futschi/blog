@@ -14,6 +14,7 @@
     <nav class="admin-nav">
       <a href="{{ url_for('admin_index') }}" class="{% if request.endpoint == 'admin_index' %}active{% endif %}">📄 文章管理</a>
       <a href="{{ url_for('admin_new') }}" class="{% if request.endpoint == 'admin_new' %}active{% endif %}">✏️ 新建文章</a>
+      <a href="{{ url_for('admin_database') }}" class="{% if request.endpoint == 'admin_database' %}active{% endif %}">🗄️ 数据库管理</a>
       <a href="{{ url_for('admin_terminal') }}" class="{% if request.endpoint == 'admin_terminal' %}active{% endif %}">💻 网页终端</a>
       <a href="{{ url_for('admin_users') }}" class="{% if request.endpoint == 'admin_users' %}active{% endif %}">👥 用户管理</a>
       <a href="{{ url_for('index') }}" target="_blank">🌐 查看网站</a>

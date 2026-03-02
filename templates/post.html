@@ -9,6 +9,9 @@
     <header class="post-header">
       <div class="post-meta">
         <time>{{ post.date_str }}</time>
+        {% if views %}
+          <span class="post-views">👁️ {{ views }}</span>
+        {% endif %}
         {% for tag in post.tags %}
           <a href="/blog/tag/{{ tag }}" class="tag">#{{ tag }}</a>
         {% endfor %}
@@ -24,14 +27,16 @@
     <nav class="post-nav">
       {% if prev_post %}
         <a href="/blog/{{ prev_post.slug }}" class="post-nav__prev">
-          ← {{ prev_post.title }}
+          <span class="post-nav__small">← 上一篇</span>
+          <span class="post-nav__title">{{ prev_post.title }}</span>
         </a>
       {% else %}
         <span></span>
       {% endif %}
       {% if next_post %}
         <a href="/blog/{{ next_post.slug }}" class="post-nav__next">
-          {{ next_post.title }} →
+          <span class="post-nav__small">下一篇 →</span>
+          <span class="post-nav__title">{{ next_post.title }}</span>
         </a>
       {% endif %}
     </nav>

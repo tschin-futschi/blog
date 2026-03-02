@@ -39,9 +39,11 @@
       <div class="result-item">
         <a href="/blog/${escHtml(p.slug)}">${highlight(p.title, q)}</a>
         <div class="result-meta">
-          ${escHtml(p.date_str)}
-          ${p.tags.map((t) => `<span class="tag">#${escHtml(t)}</span>`).join(" ")}
+          <span>${escHtml(p.date_str)}</span>
+          <span class="category-badge">${escHtml(p.category)}</span>
+          ${p.tags.slice(0, 3).map((t) => `<span class="tag">#${escHtml(t)}</span>`).join(" ")}
         </div>
+        ${p.match_context ? `<div class="result-context">${highlight(p.match_context, q)}</div>` : ""}
       </div>`
       )
       .join("");

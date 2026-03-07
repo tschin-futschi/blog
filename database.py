@@ -3,6 +3,7 @@
 """
 
 import os
+from datetime import datetime
 from flask import Flask
 from models import db, Post, Tag, ViewLog, SearchIndex
 

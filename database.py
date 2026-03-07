@@ -79,6 +79,9 @@ def sync_posts_from_files(posts_dir: str):
                 date=post_data['date']
             )
 
+            db.session.add(post)
+            db.session.flush()  # 获取 post.id
+
             # 添加标签
             for tag_name in post_data['tags']:
                 tag = Tag.query.filter_by(name=tag_name).first()
@@ -87,16 +90,16 @@ def sync_posts_from_files(posts_dir: str):
                     db.session.add(tag)
                 post.tags.append(tag)
 
-            db.session.add(post)
             print(f"创建文章: {post_data['title']}")
+            existing = post
 
         # 更新搜索索引
         search_text = f"{post_data['title']} {post_data['summary']} {post_data['raw']}"
-        search_index = SearchIndex.query.filter_by(post_id=post.id).first()
+        search_index = SearchIndex.query.filter_by(post_id=existing.id).first()
         if search_index:
             search_index.content_text = search_text
         else:
-            search_index = SearchIndex(post_id=post.id, content_text=search_text)
+            search_index = SearchIndex(post_id=existing.id, content_text=search_text)
             db.session.add(search_index)
 
     db.session.commit()

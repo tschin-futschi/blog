@@ -368,6 +368,10 @@ def extract_match_context(content: str, query: str, max_length: int = 150) -> st
 
 # ── 工具函数 ──────────────────────────────────────────────────────────────────
 
+def clean_html(text: str) -> str:
+    return re.sub(r"<[^>]+>", "", text or "").strip()
+
+
 def get_client_ip() -> str:
     return request.headers.get("X-Forwarded-For", request.remote_addr).split(",")[0].strip()
 

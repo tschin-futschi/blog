@@ -12,7 +12,7 @@
     {% for cat, count in categories.items() %}
     <a href="/blog/category/{{ cat }}" class="category-card">
       <div class="category-card__icon">{{ cat_icons.get(cat, '📁') }}</div>
-      <div class="category-card__name">{{ cat }}</div>
+      <div class="category-card__name">{{ cat_names.get(cat, cat) }}</div>
       <div class="category-card__count">{{ count }} 篇文章</div>
     </a>
     {% else %}

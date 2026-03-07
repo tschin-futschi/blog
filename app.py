@@ -204,6 +204,21 @@ CAT_ICONS = {
     "travel":  "✈️",
     "book":    "📚",
     "news":    "📰",
+    "sports":  "⚽",
+    "hr":      "👥",
+}
+
+CAT_NAMES = {
+    "ai":      "人工智能",
+    "general": "综合",
+    "tech":    "科技",
+    "finance": "金融",
+    "life":    "生活",
+    "travel":  "旅行",
+    "book":    "读书",
+    "news":    "新闻",
+    "sports":  "体育",
+    "hr":      "人力资源",
 }
 
 
@@ -213,7 +228,7 @@ def index():
     categories = get_all_categories()
     posts = get_all_posts()
     recent_posts = posts[:6] if posts else []
-    return render_template("categories.html", categories=categories, cat_icons=CAT_ICONS, recent_posts=recent_posts)
+    return render_template("categories.html", categories=categories, cat_icons=CAT_ICONS, cat_names=CAT_NAMES, recent_posts=recent_posts)
 
 
 @app.route("/blog/posts")

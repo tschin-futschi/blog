@@ -1062,12 +1062,14 @@ main {
   background: rgba(0, 0, 0, 0.4);
   z-index: 998;
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--transition-base);
   backdrop-filter: blur(2px);
 }
 
 .mobile-menu-overlay.is-open {
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* ── Hero 区域 ── */

@@ -190,7 +190,19 @@ def make_filename(title: str, date: str = None) -> str:
 
 @app.context_processor
 def inject_categories():
-    return {"all_categories": get_all_categories(), "now":datetime.now()}
+    return {"all_categories": get_all_categories(), "now": datetime.now()}
+
+
+def static_version(filename):
+    """返回静态文件的修改时间戳，用于缓存破坏"""
+    filepath = os.path.join(app.static_folder, filename)
+    try:
+        return int(os.path.getmtime(filepath))
+    except OSError:
+        return 0
+
+
+app.jinja_env.globals['static_v'] = static_version
 
 
 

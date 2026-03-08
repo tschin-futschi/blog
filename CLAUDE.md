@@ -2,7 +2,7 @@
 
 ## 项目简介
 
-**Tschin Futschi 的个人博客**（博主：Qinfuqi / 秦甫琦）
+**Tschin Futschi 的个人博客**（博主：Qinfuqi / 秦福麒）
 
 基于 Flask 的中文个人博客，内容以 AI、金融、体育、HR 等领域的资讯简报为主，辅以手动撰写文章。爬虫每日自动从 RSS 源抓取内容生成 Markdown 简报，Flask 读取文件并渲染展示。目标是做成一个**专业的个人博客网站**。
 

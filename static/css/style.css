@@ -1173,6 +1173,13 @@ main {
   letter-spacing: -0.02em;
 }
 
+.hero-welcome {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xl);
+}
+
 .hero-desc {
   font-size: 1.05rem;
   color: var(--text-secondary);

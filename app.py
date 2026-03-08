@@ -112,9 +112,15 @@ def parse_post(filepath: str) -> dict | None:
                 except ValueError:
                     date = None
     if isinstance(date, str):
-        try:
-            date = datetime.strptime(date, "%Y-%m-%d").date()
-        except ValueError:
+        for fmt in ("%Y-%m-%d %H:%M", "%Y-%m-%d"):
+            try:
+                date = datetime.strptime(date, fmt)
+                if fmt == "%Y-%m-%d":
+                    date = date.date()
+                break
+            except ValueError:
+                continue
+        else:
             date = None
 
     tags = front_matter.get("tags", [])

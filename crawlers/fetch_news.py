@@ -151,10 +151,10 @@ def fetch_feed(source: dict, keywords: dict) -> list:
     return articles
 
 
-def generate_markdown(articles: list, date: datetime.date, config: dict) -> str:
+def generate_markdown(articles: list, date: datetime.datetime, config: dict) -> str:
     """生成中英双语 Markdown 简报，标题和标签从配置文件读取"""
-    date_str = date.strftime("%Y-%m-%d")
-    date_zh  = date.strftime("%Y年%m月%d日")
+    date_str = date.strftime("%Y-%m-%d %H:%M")
+    date_zh  = date.strftime("%Y年%m月%d日 %H:%M")
 
     title_zh = config.get("title_zh", f"{CATEGORY} 资讯简报")
     title_en = config.get("title_en", f"{CATEGORY.capitalize()} News Digest")

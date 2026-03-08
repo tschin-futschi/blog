@@ -1259,6 +1259,42 @@ main {
   font-weight: 500;
 }
 
+/* 哲学引言 */
+.hero-quote {
+  margin-bottom: var(--space-xl);
+  padding: var(--space-md) var(--space-lg);
+  border-left: 3px solid var(--accent);
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.hero-quote__mark {
+  font-size: 1.4rem;
+  color: var(--accent);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.hero-quote__text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.hero-quote__author {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 0.25rem;
+}
+
 .hero-stat-sep {
   width: 1px;
   height: 36px;

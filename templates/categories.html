@@ -25,6 +25,13 @@
         <a href="/blog/posts" class="hero-btn hero-btn--primary">浏览全部文章</a>
         <a href="/blog/category/ai" class="hero-btn hero-btn--ghost">AI 简报 →</a>
       </div>
+      <div class="hero-quote" id="hero-quote">
+        <span class="hero-quote__mark">"</span>
+        <span class="hero-quote__text" id="quote-text"></span>
+        <span class="hero-quote__mark">"</span>
+        <cite class="hero-quote__author" id="quote-author"></cite>
+      </div>
+
       <div class="hero-stats">
         <div class="hero-stat">
           <span class="hero-stat__num">{{ total_posts }}</span>
@@ -79,4 +86,47 @@
   </section>
   {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  var quotes = [
+    // 孔子
+    { text: "学而不思则罔，思而不学则殆。", author: "孔子" },
+    { text: "己所不欲，勿施于人。", author: "孔子" },
+    { text: "知之者不如好之者，好之者不如乐之者。", author: "孔子" },
+    { text: "三人行，必有我师焉。", author: "孔子" },
+    { text: "吾日三省吾身。", author: "孔子" },
+    // 老子
+    { text: "知人者智，自知者明。胜人者有力，自胜者强。", author: "老子" },
+    { text: "千里之行，始于足下。", author: "老子" },
+    { text: "上善若水，水善利万物而不争。", author: "老子" },
+    { text: "为学日益，为道日损。损之又损，以至于无为。", author: "老子" },
+    { text: "天下难事，必作于易；天下大事，必作于细。", author: "老子" },
+    // 苏格拉底
+    { text: "认识你自己。", author: "苏格拉底" },
+    { text: "未经审视的生活不值得过。", author: "苏格拉底" },
+    { text: "我知道我什么都不知道。", author: "苏格拉底" },
+    { text: "教育是点燃火焰，而非填满容器。", author: "苏格拉底" },
+    { text: "智慧始于好奇。", author: "苏格拉底" },
+    // 尼采
+    { text: "杀不死我的，使我更强大。", author: "尼采" },
+    { text: "每一个不曾起舞的日子，都是对生命的辜负。", author: "尼采" },
+    { text: "没有音乐，生命将是一个错误。", author: "尼采" },
+    { text: "你必须有一团混沌，才能诞生一颗舞动的星。", author: "尼采" },
+    { text: "那些听不到音乐的人，以为跳舞的人疯了。", author: "尼采" },
+    // 叔本华
+    { text: "人可以做他想做的，但不能要他想要的。", author: "叔本华" },
+    { text: "读书是借助他人的思想，来省去自己思考的过程。", author: "叔本华" },
+    { text: "财富犹如海水，饮得越多，渴得越厉害。", author: "叔本华" },
+    { text: "人性一个最特别的弱点，就是在意别人如何看待自己。", author: "叔本华" },
+    { text: "限制你的，不是你的能力，而是你的视野。", author: "叔本华" },
+  ];
+
+  var q = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById('quote-text').textContent = q.text;
+  document.getElementById('quote-author').textContent = '— ' + q.author;
+})();
+</script>
 {% endblock %}

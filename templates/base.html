@@ -54,6 +54,7 @@
 
   <script src="{{ url_for('static', filename='js/header-scroll.js') }}"></script>
   <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+  {% block scripts %}{% endblock %}
 
   {% if config.DEBUG %}
   <script>

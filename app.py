@@ -170,7 +170,15 @@ def get_all_posts(category: str = None) -> list:
                     continue
                 posts.append(post)
 
-    posts.sort(key=lambda p: p["date"] or datetime.min.date(), reverse=True)
+    def sort_key(p):
+        d = p["date"]
+        if d is None:
+            return datetime.min
+        if isinstance(d, datetime):
+            return d
+        return datetime(d.year, d.month, d.day)
+
+    posts.sort(key=sort_key, reverse=True)
     return posts
 
 

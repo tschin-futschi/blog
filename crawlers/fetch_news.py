@@ -216,10 +216,10 @@ def generate_markdown(articles: list, date: datetime.date, config: dict) -> str:
     return "\n".join(lines)
 
 
-def save_post(content: str, date: datetime.date, config: dict) -> str:
+def save_post(content: str, date: datetime.datetime, config: dict) -> str:
     """保存为 Markdown 文件"""
     os.makedirs(POSTS_DIR, exist_ok=True)
-    date_str  = date.strftime("%Y-%m-%d")
+    date_str  = date.strftime("%Y-%m-%d-%H%M")
     slug_name = config.get("slug", f"{CATEGORY}-news-digest")
     filename  = f"{date_str}-{slug_name}.md"
     filepath  = os.path.join(POSTS_DIR, filename)
@@ -231,7 +231,7 @@ def save_post(content: str, date: datetime.date, config: dict) -> str:
 # ── 主程序 ───────────────────────────────────────────────────────────────────
 
 def main():
-    today = datetime.date.today()
+    today = datetime.datetime.now()
     logger.info("=" * 50)
     logger.info(f"开始抓取 [{CATEGORY}] 资讯简报 ({today})")
     logger.info(f"文章保存至: {POSTS_DIR}")

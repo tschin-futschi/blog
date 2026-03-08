@@ -939,6 +939,199 @@ main {
   color: var(--accent);
 }
 
+/* ── Hero 区域 ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-2xl) 0 var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  border-radius: var(--radius-lg);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* 装饰光晕 */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+}
+
+.hero-orb--1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #6366f1 0%, transparent 70%);
+  top: -100px;
+  right: -80px;
+}
+
+.hero-orb--2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #818cf8 0%, transparent 70%);
+  bottom: -80px;
+  left: 10%;
+  opacity: 0.2;
+}
+
+.hero-orb--3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #a5b4fc 0%, transparent 70%);
+  top: 20%;
+  left: 40%;
+  opacity: 0.15;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--space-xl);
+  max-width: 720px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 100px;
+  padding: 0.3rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+  letter-spacing: 0.01em;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: var(--space-lg);
+  letter-spacing: -0.04em;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.hero-name {
+  color: var(--text-primary);
+}
+
+.hero-slash {
+  color: var(--accent);
+  font-weight: 400;
+  font-size: 2.2rem;
+}
+
+.hero-alias {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: -0.02em;
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: var(--space-xl);
+  max-width: 560px;
+}
+
+.hero-desc strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hero-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all var(--transition-base);
+  white-space: nowrap;
+}
+
+.hero-btn--primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.hero-btn--primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+  color: #fff;
+  text-decoration: none;
+}
+
+.hero-btn--ghost {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border-color);
+}
+
+.hero-btn--ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.hero-stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.hero-stat__num {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.hero-stat__label {
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.hero-stat-sep {
+  width: 1px;
+  height: 36px;
+  background: var(--border-color);
+}
+
 /* ── 响应式优化 ── */
 @media (max-width: 640px) {
   .container {
@@ -979,6 +1172,30 @@ main {
 
   .post-header h1 {
     font-size: 1.8rem;
+  }
+
+  .hero {
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .hero-content {
+    padding: 0 var(--space-md);
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-alias {
+    font-size: 1.3rem;
+  }
+
+  .hero-orb--1 {
+    width: 250px;
+    height: 250px;
+    top: -60px;
+    right: -60px;
   }
 }
 

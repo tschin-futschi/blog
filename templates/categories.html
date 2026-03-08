@@ -1,11 +1,54 @@
 {% extends "base.html" %}
 
-{% block title %}文章分类{% endblock %}
+{% block title %}Tschin Futschi 的博客{% endblock %}
 
 {% block content %}
 <div class="categories-page">
+
+  {# ── Hero 区域 ── #}
+  {% set total_posts = categories.values() | sum %}
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb--1"></div>
+      <div class="hero-orb hero-orb--2"></div>
+      <div class="hero-orb hero-orb--3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">👋 你好，欢迎来到我的博客</div>
+      <h1 class="hero-title">
+        <span class="hero-name">秦甫琦</span>
+        <span class="hero-slash">/</span>
+        <span class="hero-alias">Tschin Futschi</span>
+      </h1>
+      <p class="hero-desc">
+        关注 <strong>AI 前沿</strong>、<strong>金融市场</strong>、<strong>体育赛事</strong>与<strong>人力资源</strong>，
+        每日整理行业资讯简报，偶尔记录个人思考与见解。
+      </p>
+      <div class="hero-actions">
+        <a href="/blog/posts" class="hero-btn hero-btn--primary">浏览全部文章</a>
+        <a href="/blog/category/ai" class="hero-btn hero-btn--ghost">AI 简报 →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat__num">{{ total_posts }}</span>
+          <span class="hero-stat__label">篇文章</span>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <span class="hero-stat__num">{{ categories | length }}</span>
+          <span class="hero-stat__label">个分类</span>
+        </div>
+        <div class="hero-stat-sep"></div>
+        <div class="hero-stat">
+          <span class="hero-stat__num">每日</span>
+          <span class="hero-stat__label">更新</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="categories-header">
-    <h1 class="categories-title">文章分类</h1>
+    <h2 class="categories-title">文章分类</h2>
     <a href="/blog/posts" class="view-all-btn">查看所有文章 →</a>
   </div>
   <div class="categories-grid">

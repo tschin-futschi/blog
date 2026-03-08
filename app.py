@@ -97,12 +97,20 @@ def parse_post(filepath: str) -> dict | None:
 
     date = front_matter.get("date")
     if not date:
-        date_match = re.match(r"(\d{4}-\d{2}-\d{2})", filename)
-        if date_match:
+        # 优先尝试带时分的格式：2026-03-08-1430-xxx.md
+        dt_match = re.match(r"(\d{4}-\d{2}-\d{2})-(\d{4})", filename)
+        if dt_match:
             try:
-                date = datetime.strptime(date_match.group(1), "%Y-%m-%d").date()
+                date = datetime.strptime(dt_match.group(1) + dt_match.group(2), "%Y-%m-%d%H%M")
             except ValueError:
                 date = None
+        else:
+            date_match = re.match(r"(\d{4}-\d{2}-\d{2})", filename)
+            if date_match:
+                try:
+                    date = datetime.strptime(date_match.group(1), "%Y-%m-%d").date()
+                except ValueError:
+                    date = None
     if isinstance(date, str):
         try:
             date = datetime.strptime(date, "%Y-%m-%d").date()
@@ -126,7 +134,7 @@ def parse_post(filepath: str) -> dict | None:
         "filepath": filepath,
         "title": front_matter.get("title", filename),
         "date": date,
-        "date_str": date.strftime("%Y年%m月%d日") if date else "未知日期",
+        "date_str": (date.strftime("%Y年%m月%d日 %H:%M") if hasattr(date, 'hour') else date.strftime("%Y年%m月%d日")) if date else "未知日期",
         "tags": tags,
         "summary": front_matter.get("summary", content[:120].strip() + "..."),
         "content": html_content,

@@ -54,5 +54,29 @@
 
   <script src="{{ url_for('static', filename='js/header-scroll.js') }}"></script>
   <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+
+  {% if config.DEBUG %}
+  <script>
+    // CSS 热更新（仅 debug 模式）
+    (function() {
+      const link = document.querySelector('link[rel="stylesheet"]');
+      if (!link) return;
+      let lastModified = null;
+      setInterval(function() {
+        fetch(link.href, { method: 'HEAD', cache: 'no-store' })
+          .then(function(r) {
+            const lm = r.headers.get('Last-Modified');
+            if (lastModified && lm !== lastModified) {
+              const url = new URL(link.href);
+              url.searchParams.set('_t', Date.now());
+              link.href = url.toString();
+            }
+            lastModified = lm;
+          })
+          .catch(function() {});
+      }, 1000);
+    })();
+  </script>
+  {% endif %}
 </body>
 </html>

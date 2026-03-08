@@ -113,8 +113,15 @@ def fetch_feed(source: dict, keywords: dict) -> list:
         if total_entries == 0:
             logger.warning(f"警告: {source['name_zh']} 没有解析到任何条目，请检查 RSS 地址是否有效")
 
+        # 按发布时间倒序排列，优先取最新文章
+        def entry_time(e):
+            t = e.get("published_parsed") or e.get("updated_parsed")
+            return t if t else (0,)
+
+        sorted_entries = sorted(feed.entries, key=entry_time, reverse=True)
+
         seen_titles = set()
-        for entry in feed.entries[:10]:
+        for entry in sorted_entries[:10]:
             title   = clean_html(entry.get("title", ""))
             summary = truncate(entry.get("summary", entry.get("description", "")))
             link    = entry.get("link", "")

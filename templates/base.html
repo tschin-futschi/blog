@@ -20,8 +20,27 @@
           <div id="search-results"></div>
         </div>
       </nav>
+      <button class="hamburger" id="hamburger" aria-label="菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <nav class="mobile-menu__nav">
+      <a href="/blog" class="mobile-menu__link">🏠 首页</a>
+      <a href="/blog/posts" class="mobile-menu__link">📄 全部文章</a>
+      <a href="/blog/category/ai" class="mobile-menu__link">🤖 人工智能</a>
+      <a href="/blog/category/finance" class="mobile-menu__link">💰 金融</a>
+      <a href="/blog/category/sports" class="mobile-menu__link">⚽ 体育</a>
+      <a href="/blog/category/hr" class="mobile-menu__link">👥 人力资源</a>
+      <a href="/admin" class="mobile-menu__link mobile-menu__link--admin">⚙️ 后台管理</a>
+    </nav>
+    <div class="mobile-menu__search">
+      <input type="text" id="mobile-search-input" placeholder="搜索文章…" autocomplete="off" />
+    </div>
+  </div>
+  <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
 
   <main class="container">
     {% block content %}{% endblock %}
